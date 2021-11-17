@@ -34,21 +34,23 @@ namespace hdict2voc
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // load_hdict
             // 
-            this.load_hdict.Location = new System.Drawing.Point(12, 12);
+            this.load_hdict.Location = new System.Drawing.Point(6, 20);
             this.load_hdict.Name = "load_hdict";
             this.load_hdict.Size = new System.Drawing.Size(99, 53);
             this.load_hdict.TabIndex = 1;
-            this.load_hdict.Text = "载入文件(dl_dataset)";
+            this.load_hdict.Text = "载入文件(.hdict)";
             this.load_hdict.UseVisualStyleBackColor = true;
             this.load_hdict.Click += new System.EventHandler(this.load_hdict_Click);
             // 
             // gen_xml
             // 
-            this.gen_xml.Location = new System.Drawing.Point(117, 12);
+            this.gen_xml.Location = new System.Drawing.Point(111, 20);
             this.gen_xml.Name = "gen_xml";
             this.gen_xml.Size = new System.Drawing.Size(75, 53);
             this.gen_xml.TabIndex = 2;
@@ -58,7 +60,7 @@ namespace hdict2voc
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(311, 44);
+            this.textBox1.Location = new System.Drawing.Point(302, 37);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(211, 21);
             this.textBox1.TabIndex = 5;
@@ -67,7 +69,7 @@ namespace hdict2voc
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(210, 47);
+            this.label1.Location = new System.Drawing.Point(201, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 12);
             this.label1.TabIndex = 6;
@@ -75,26 +77,42 @@ namespace hdict2voc
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 71);
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 97);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(510, 422);
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(554, 434);
             this.richTextBox1.TabIndex = 7;
             this.richTextBox1.Text = "";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.load_hdict);
+            this.groupBox1.Controls.Add(this.gen_xml);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(554, 91);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 505);
+            this.ClientSize = new System.Drawing.Size(554, 531);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.gen_xml);
-            this.Controls.Add(this.load_hdict);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(570, 570);
+            this.MinimumSize = new System.Drawing.Size(570, 570);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -105,6 +123,7 @@ namespace hdict2voc
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

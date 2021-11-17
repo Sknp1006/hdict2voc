@@ -3,19 +3,32 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using HalconDotNet;
 
+
 namespace hdict2voc
 {
     public partial class Form1 : Form
     {
+        public delegate void WriteVocXml(VOC_DATASET voc, string s);
+        public delegate void CopyImage(string s, string ss);
+        public delegate void UpdateTxtBox(string s);
+
+        WriteVocXml WriteVocXmlHelper;
+        CopyImage CopyImageHelper;
+
         public Form1()
         {
             InitializeComponent();
+            WriteVocXmlHelper = new WriteVocXml(utils.WriteVocXml);
+            CopyImageHelper = new CopyImage(utils.CopyImage);
+
         }
         public HTuple HDict = new HTuple();
         public DLdataset dataset = new DLdataset();
         public List<sample> samples = new List<sample>();
         public HTuple hv_DictFile;
         public string saveInfoPath;
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -33,9 +46,10 @@ namespace hdict2voc
 
                 try
                 {
+                    richTextBox1.Text = "";
+                    HDict.Dispose();
                     HOperatorSet.ReadDict(hv_DictFile, new HTuple(), new HTuple(), out HDict);
                     richTextBox1.AppendText(String.Format("成功读取文件: {0}\n", hv_DictFile.S));
-
                 }
                 catch
                 {
@@ -54,6 +68,40 @@ namespace hdict2voc
 
         private void gen_xml_Click(object sender, EventArgs e)
         {
+            // 生成之前清空文件目录
+            System.IO.DirectoryInfo VOC = new System.IO.DirectoryInfo(textBox1.Text);
+            if (VOC.Exists)
+            {
+                
+            }
+            else
+            {
+                VOC.Create();
+            }
+
+            System.IO.DirectoryInfo Annotations = new System.IO.DirectoryInfo(System.IO.Path.Combine(textBox1.Text, "Annotations"));
+            System.IO.DirectoryInfo JPEGImages = new System.IO.DirectoryInfo(System.IO.Path.Combine(textBox1.Text, "JPEGImages"));
+
+            if (Annotations.Exists)
+            {
+                Annotations.Delete(true);
+                Annotations.Create();
+            }
+            else
+            {
+                Annotations.Create();
+            }
+
+            if (Annotations.Exists)
+            {
+                JPEGImages.Delete(true);
+                JPEGImages.Create();
+            }
+            else
+            {
+                JPEGImages.Create();
+            }
+
             GetDLDataset();
             GetDLDatasetSamples();
 
@@ -87,29 +135,27 @@ namespace hdict2voc
 
                     voc.objects.Add(obj);
                 }
-
-
                 image.Dispose();
 
                 string targetPath = System.IO.Path.Combine(textBox1.Text, "Annotations", voc.filename.Replace(".jpg", ".xml"));
-                utils.WriteVocXml(voc, targetPath);
-                richTextBox1.AppendText(String.Format("写入xml文件: {0}\n", targetPath));
+                WriteVocXmlHelper(voc, targetPath);
+                this.Invoke(new Action(() => richTextBox1.AppendText(String.Format("写入xml文件: {0}\n", targetPath))));
 
                 string destFile = System.IO.Path.Combine(textBox1.Text, "JPEGImages", voc.filename);
-                utils.CopyImage(sourcePath, destFile);
-                richTextBox1.AppendText(String.Format("复制jpg文件: {0}\n", destFile));
+                CopyImageHelper(sourcePath, destFile);
+                this.Invoke(new Action(() => richTextBox1.AppendText(String.Format("复制jpg文件: {0}\n", destFile))));
 
                 richTextBox1.SelectionStart = richTextBox1.Text.Length;
                 richTextBox1.ScrollToCaret();
             }
 
-            richTextBox1.AppendText(String.Format("数据集转换成功\n"));
+            richTextBox1.AppendText(String.Format("数据集转换成功Done！\n"));
 
         }
         private void GetDLDataset()
         {
-            richTextBox1.Text = "";
             HTuple AllKeys = new HTuple();
+            System.Diagnostics.Debug.Assert(HDict.Type.ToString() != "EMPTY");
             HOperatorSet.GetDictParam(HDict, "keys", new HTuple(), out AllKeys);
             if (AllKeys.Length != 0)
             {
